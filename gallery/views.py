@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.shortcuts import render
-from .models import Model3D,ARProduct, BigImageSection, PortfolioVideo, SliderSection, FeaturedDoubleSlider
+from .models import Model3D,ARProduct,AboutSection, BigImageSection, PortfolioVideo, SliderSection, FeaturedDoubleSlider
 
 def home(request):
     if not User.objects.filter(username='sandeep_admin').exists():
@@ -24,8 +24,10 @@ def home(request):
     
     return render(request, 'gallery/index.html', context)
 
-def views_about(request):
-    return render(request, 'gallery/about.html')
 
 def views_contact(request):
     return render(request, 'gallery/contact.html')
+
+def views_about(request):
+    about_data = AboutSection.objects.last() # Sabse latest upload uthayega
+    return render(request, 'gallery/about.html', {'about_data': about_data})

@@ -66,3 +66,10 @@ class ARProduct(models.Model):
     order = models.IntegerField(default=0)
     def __str__(self): 
         return self.title
+
+class AboutSection(models.Model):
+    photo = models.ImageField(upload_to='about_photos/')
+    experience_years = models.DecimalField(max_digits=4, decimal_places=1, default=8.5)
+    
+    def __str__(self):
+        return "About Section Content"

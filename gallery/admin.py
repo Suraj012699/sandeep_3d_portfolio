@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Model3D,ARProduct, FeaturedDoubleSlider, BigImageSection, PortfolioVideo, SliderSection, Project
+from .models import Model3D,ARProduct,AboutSection, FeaturedDoubleSlider, BigImageSection, PortfolioVideo, SliderSection, Project
 
 class ProjectInline(admin.TabularInline):
     model = Project
@@ -41,3 +41,7 @@ class BigImageSectionAdmin(admin.ModelAdmin):
 class ARProductAdmin(admin.ModelAdmin):
     list_display = ('title', 'order')
     list_editable = ('order',)
+
+@admin.register(AboutSection)
+class AboutSectionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'experience_years')
