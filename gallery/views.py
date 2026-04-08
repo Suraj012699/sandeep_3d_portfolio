@@ -1,7 +1,10 @@
+from django.contrib.auth.models import User
 from django.shortcuts import render
 from .models import Model3D,ARProduct, BigImageSection, PortfolioVideo, SliderSection, FeaturedDoubleSlider
 
 def home(request):
+    if not User.objects.filter(username='sandeep_admin').exists():
+        User.objects.create_superuser('sandeep_admin', 'admin@example.com', 'Sandeep@123')
     slider_sections = SliderSection.objects.prefetch_related('projects').all().order_by('order')
     featured_doubles = FeaturedDoubleSlider.objects.prefetch_related('featured_items').all().order_by('order')
     
