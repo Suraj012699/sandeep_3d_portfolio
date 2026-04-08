@@ -133,6 +133,8 @@ CLOUDINARY_STORAGE = {
 
 # Media files ka rasta badalna (Yahi sabse main hai)
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+# Static files storage (CSS/JS ke liye)
+STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
