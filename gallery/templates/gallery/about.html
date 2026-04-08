@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | Sandeep Sharma - 3D Specialist</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;800;900&display=swap');
+        
+        body { 
+            background-color: #FAF9F6; 
+            color: #1e293b; 
+            font-family: 'Inter', sans-serif; 
+            overflow-x: hidden; 
+        }
+
+        /* Fixed CSS Classes */
+        .maroon-text { color: #800000; }
+        .maroon-bg { background-color: #800000; }
+
+        .glass { 
+            background: rgba(0, 0, 0, 0.02); 
+            backdrop-filter: blur(10px); 
+            border: 1px solid rgba(0, 0, 0, 0.05); 
+        }
+
+        .section-line { 
+            height: 4px; 
+            width: 80px; 
+            background-color: #800000; 
+            margin-bottom: 1.5rem; 
+            border-radius: 9999px; 
+        }
+
+        .nav-link { 
+            font-size: 10px; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 0.2em; 
+            transition: all 0.3s ease; 
+        }
+
+        .experience-card { 
+            transition: transform 0.4s ease, border-color 0.4s ease; 
+        }
+        
+        .experience-card:hover { 
+            transform: translateY(-5px); 
+            border-color: #800000; 
+        }
+
+        /* Custom Scrollbar for Maroon Theme */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-thumb { background: #800000; border-radius: 10px; }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <nav class="p-4 sticky top-0 z-[100] bg-[#FAF9F6]/95 backdrop-blur-md border-b border-black/5">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <a href="{% url 'home' %}" class="text-xl font-black tracking-tighter text-[#800000] italic">
+            SANDEEP_3D
+        </a>
+
+        <div class="hidden md:flex space-x-10">
+            <a href="{% url 'home' %}" class="nav-link {% if request.resolver_match.url_name == 'home' %}maroon-text border-b-2 border-[#800000]{% else %}text-slate-400 hover:text-[#800000]{% endif %}">Work</a>
+            <a href="{% url 'about' %}" class="nav-link {% if request.resolver_match.url_name == 'about' %}maroon-text border-b-2 border-[#800000]{% else %}text-slate-400 hover:text-[#800000]{% endif %}">About</a>
+            <a href="{% url 'contact' %}" class="nav-link {% if request.resolver_match.url_name == 'contact' %}maroon-text border-b-2 border-[#800000]{% else %}text-slate-400 hover:text-[#800000]{% endif %}">Contact</a>
+        </div>
+
+        <button id="menu-btn" class="md:hidden text-[#800000] focus:outline-none">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
+    </div>
+
+    <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-[#FAF9F6] border-b border-black/5 shadow-xl transition-all duration-300">
+        <div class="flex flex-col p-6 space-y-6">
+            <a href="{% url 'home' %}" class="text-sm font-black tracking-widest uppercase text-center {% if request.resolver_match.url_name == 'home' %}text-[#800000]{% else %}text-slate-500{% endif %}">Work</a>
+            <a href="{% url 'about' %}" class="text-sm font-black tracking-widest uppercase text-center {% if request.resolver_match.url_name == 'about' %}text-[#800000]{% else %}text-slate-500{% endif %}">About</a>
+            <a href="{% url 'contact' %}" class="text-sm font-black tracking-widest uppercase text-center {% if request.resolver_match.url_name == 'contact' %}text-[#800000]{% else %}text-slate-500{% endif %}">Contact</a>
+        </div>
+    </div>
+</nav>
+
+    <header class="max-w-7xl mx-auto px-6 py-20">
+        <div class="flex flex-col md:flex-row items-center gap-16">
+            <div class="w-full md:w-1/2">
+                <div class="section-line"></div>
+                <h2 class="text-6xl md:text-8xl font-black tracking-tighter mb-6 uppercase text-[#1e293b]">
+                    DESIGNING <br> <span class="maroon-text italic">REALITY.</span>
+                </h2>
+                <p class="text-xl text-slate-500 font-light tracking-wide leading-relaxed">
+                    Sandeep Sharma — Senior 3D Visualization Specialist with a focus on high-end hardware and consumer electronics.
+                </p>
+            </div>
+            <div class="w-full md:w-1/2 relative">
+                <div class="glass p-12 rounded-[4rem] text-center border-2 border-[#800000]/10 shadow-2xl relative z-10">
+                    <h3 class="text-9xl font-black maroon-text leading-none italic">8.5</h3>
+                    <p class="text-sm font-bold tracking-[0.4em] uppercase text-slate-400 mt-4">Years of Industry Expertise</p>
+                </div>
+                <div class="absolute -top-10 -right-10 w-40 h-40 maroon-bg/5 rounded-full blur-3xl"></div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 pb-24 grid grid-cols-1 md:grid-cols-12 gap-16">
+        
+        <div class="md:col-span-7 space-y-8">
+            <section>
+                <h4 class="text-[10px] font-black tracking-[0.5em] uppercase text-slate-400 mb-6 italic">The Professional Journey</h4>
+                <div class="text-lg text-slate-700 leading-relaxed space-y-6">
+                    <p>
+                        With <strong>8.5 years of experience</strong> in high-end 3D product visualization, I specialize in transforming complex engineering data into photorealistic brand imagery. My expertise lies in the hardware and consumer electronics sectors, where I have collaborated with global industry leaders including <strong>Kohler, Dell, Haier, Whirlpool, and Elica.</strong>
+                    </p>
+                    <p>
+                        I bridge the gap between industrial design and marketing by converting <strong>CAD files (STP/STEP)</strong> into compelling visual assets. Whether interpreting technical drawings to ensure design accuracy or modeling custom components to enhance realism, my focus is always on delivering a premium consumer experience.
+                    </p>
+                    <p>
+                        Beyond traditional rendering, I have pioneered <strong>AR-based product models</strong> successfully integrated into e-commerce giants like <strong>Amazon, Walmart, Marks & Spencer, and Wayfair.</strong> My portfolio also extends to high-level architectural visualization, creating aesthetically refined interior environments.
+                    </p>
+                </div>
+            </section>
+        </div>
+
+        <div class="md:col-span-5 space-y-12">
+            
+            <div class="space-y-4">
+                <h4 class="text-[10px] font-black tracking-[0.5em] uppercase text-slate-400 mb-6 italic">Core Expertise</h4>
+                
+                <div class="glass p-6 rounded-3xl border border-black/5 experience-card">
+                    <h5 class="font-black text-[#1e293b] uppercase text-[11px] mb-2 tracking-widest">Engineering to Marketing</h5>
+                    <p class="text-[13px] text-slate-500 leading-normal">Seamless conversion of CAD/STP data into photoreal marketing imagery.</p>
+                </div>
+
+                <div class="glass p-6 rounded-3xl border border-black/5 experience-card">
+                    <h5 class="font-black text-[#1e293b] uppercase text-[11px] mb-2 tracking-widest">E-commerce AR Ready</h5>
+                    <p class="text-[13px] text-slate-500 leading-normal">Optimized assets for WebAR, Amazon, and Wayfair standards.</p>
+                </div>
+
+                <div class="glass p-6 rounded-3xl border border-black/5 experience-card">
+                    <h5 class="font-black text-[#1e293b] uppercase text-[11px] mb-2 tracking-widest">Product Staging</h5>
+                    <p class="text-[13px] text-slate-500 leading-normal">Bespoke 3D interior design specifically tailored for product placement.</p>
+                </div>
+            </div>
+
+            <div>
+                <h4 class="text-[10px] font-black tracking-[0.5em] uppercase text-slate-400 mb-8 italic">Strategic Collaborations</h4>
+                <div class="grid grid-cols-2 gap-y-8 gap-x-4 grayscale opacity-60">
+                    <span class="text-sm font-black text-[#1e293b] tracking-tighter">DELL TECHNOLOGIES</span>
+                    <span class="text-sm font-black text-[#1e293b] tracking-tighter">KOHLER CO.</span>
+                    <span class="text-sm font-black text-[#1e293b] tracking-tighter">AMAZON GLOBAL</span>
+                    <span class="text-sm font-black text-[#1e293b] tracking-tighter">HAIER GROUP</span>
+                    <span class="text-sm font-black text-[#1e293b] tracking-tighter">WHIRLPOOL</span>
+                    <span class="text-sm font-black text-[#1e293b] tracking-tighter">WAYFAIR</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="py-12 border-t border-black/5 text-center">
+        <p class="text-[10px] font-bold tracking-[0.4em] uppercase text-slate-400">&copy; 2026 SANDEEP SHARMA — 3D VISUALIZATION SPECIALIST</p>
+    </footer>
+<script>
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIcon = document.getElementById('menu-icon');
+
+    menuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+        
+        // Icon toggle (Optional: Change icon from Burger to X)
+        if (mobileMenu.classList.contains('hidden')) {
+            menuIcon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+        } else {
+            menuIcon.setAttribute('d', 'M6 18L18 6M6 6l12 12');
+        }
+    });
+</script>
+</body>
+</html>

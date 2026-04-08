@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sandeep | 3D Artist Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;800;900&display=swap');
+        /* Background Off-White and Text dark for readability */
+        body { background-color: #FAF9F6; color: #1e293b; font-family: 'Inter', sans-serif; overflow-x: hidden; scroll-behavior: smooth; }
+        /* Glass effect adjusted for light background */
+        .glass { background: rgba(0, 0, 0, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(0, 0, 0, 0.05); }
+        .zoom-container { overflow: hidden; position: relative; background: #e2e8f0; display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; }
+        .zoom-image { transition: transform 0.3s ease-out; }
+        .ar-img-fix { width: 100%; height: 100%; object-fit: cover; }
+        .slider-wrapper { display: flex; width: 100%; transition: transform 650ms cubic-bezier(0.4, 0, 0.2, 1); }
+        .slide { flex: 0 0 100%; padding: 0 2.5%; }
+        .dbl-slide-group { flex: 0 0 100%; display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; padding: 0 2.5%; }
+        @media (max-width: 768px) { .dbl-slide-group { grid-template-columns: 1fr; } }
+        /* Maroon accents for headers */
+        .slider-header { font-size: 1.5rem; font-weight: 800; letter-spacing: 0.3em; text-transform: uppercase; color: #800000; position: relative; display: inline-block; margin-bottom: 2rem; margin-left: 2.5%; }
+        .slider-header::after { content: ''; position: absolute; bottom: -8px; left: 0; width: 60px; height: 3px; background: #800000; border-radius: 10px; }
+        .section-header-text { color: #800000; font-weight: 900; }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-thumb { background: #800000; border-radius: 10px; }
+        /* Maroon Gradient for buttons */
+        .maroon-btn { background: linear-gradient(to right, #800000, #a52a2a); color: white; }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <nav class="p-4 sticky top-0 z-[100] bg-[#FAF9F6]/95 backdrop-blur-md border-b border-black/5">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <a href="{% url 'home' %}" class="text-xl font-black tracking-tighter text-[#800000] italic">
+            SANDEEP_3D
+        </a>
+
+        <div class="hidden md:flex space-x-10">
+            <a href="{% url 'home' %}" class="nav-link {% if request.resolver_match.url_name == 'home' %}maroon-text border-b-2 border-[#800000]{% else %}text-slate-400 hover:text-[#800000]{% endif %}">Work</a>
+            <a href="{% url 'about' %}" class="nav-link {% if request.resolver_match.url_name == 'about' %}maroon-text border-b-2 border-[#800000]{% else %}text-slate-400 hover:text-[#800000]{% endif %}">About</a>
+            <a href="{% url 'contact' %}" class="nav-link {% if request.resolver_match.url_name == 'contact' %}maroon-text border-b-2 border-[#800000]{% else %}text-slate-400 hover:text-[#800000]{% endif %}">Contact</a>
+        </div>
+
+        <button id="menu-btn" class="md:hidden text-[#800000] focus:outline-none">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
+    </div>
+
+    <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-[#FAF9F6] border-b border-black/5 shadow-xl transition-all duration-300">
+        <div class="flex flex-col p-6 space-y-6">
+            <a href="{% url 'home' %}" class="text-sm font-black tracking-widest uppercase text-center {% if request.resolver_match.url_name == 'home' %}text-[#800000]{% else %}text-slate-500{% endif %}">Work</a>
+            <a href="{% url 'about' %}" class="text-sm font-black tracking-widest uppercase text-center {% if request.resolver_match.url_name == 'about' %}text-[#800000]{% else %}text-slate-500{% endif %}">About</a>
+            <a href="{% url 'contact' %}" class="text-sm font-black tracking-widest uppercase text-center {% if request.resolver_match.url_name == 'contact' %}text-[#800000]{% else %}text-slate-500{% endif %}">Contact</a>
+        </div>
+    </div>
+</nav>
+
+    <header class="py-16 text-center">
+        <h4 class="text-5xl md:text-7xl font-black mb-4 tracking-tighter uppercase text-[#1e293b]">Sandeep Sharma</h4>
+        <p class="text-slate-500 text-sm md:text-base tracking-[0.4em] font-light mt-2 ">3D Artist | Modeler | Visualizer</p>
+        <div class="h-1 w-24 bg-[#800000] mx-auto mt-10 rounded-full"></div>
+    </header>
+
+    {% for section in slider_sections %}
+    {% if section.projects.all %}
+    <div class="slider-block mb-24" data-type="std">
+        <h2 class="slider-header">{{ section.name }}</h2>
+        <section class="slider-container relative w-full overflow-hidden mb-4">
+            <button class="prevBtn absolute left-4 md:left-10 top-1/2 -translate-y-1/2 z-50 bg-white/80 hover:bg-[#800000] hover:text-white p-3 rounded-full border border-black/5 transition-all shadow-md"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M15 19l-7-7 7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <button class="nextBtn absolute right-4 md:right-10 top-1/2 -translate-y-1/2 z-50 bg-white/80 hover:bg-[#800000] hover:text-white p-3 rounded-full border border-black/5 transition-all shadow-md"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M9 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="slider-wrapper">
+                {% for project in section.projects.all %}
+                <div class="slide">
+                    <div class="glass rounded-[2rem] overflow-hidden group relative flex flex-col w-full max-w-[95%] mx-auto shadow-xl border border-black/5">
+                        <div class="zoom-container relative w-full h-[300px] md:h-[600px]"><img src="{{ project.thumbnail.url }}" class="absolute inset-0 w-full h-full object-contain zoom-image slider-zoom"></div>
+                        <div class="p-4 md:px-10 md:py-6 flex flex-col md:flex-row justify-between items-center bg-white/50 border-t border-black/5">
+                            <div><h3 class="text-2xl font-black uppercase tracking-tight text-[#1e293b]">{{ project.title }}</h3></div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        <div class="dot-container flex justify-center gap-2 mb-6">{% for project in section.projects.all %}<div class="dot h-1 w-8 bg-black/10 rounded-full transition-all duration-300"></div>{% endfor %}</div>
+    </div>
+    {% endif %}
+    {% endfor %}
+
+    {% for f_section in featured_doubles %}
+    {% if f_section.featured_items.all %}
+    <div class="slider-block mb-24" data-type="dbl">
+        <h2 class="slider-header">{{ f_section.name }}</h2>
+        <section class="slider-container relative w-full overflow-hidden mb-4">
+            <button class="prevBtn absolute left-4 md:left-10 top-1/2 -translate-y-1/2 z-50 bg-white/80 hover:bg-[#800000] hover:text-white p-3 rounded-full shadow-md"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M15 19l-7-7 7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <button class="nextBtn absolute right-4 md:right-10 top-1/2 -translate-y-1/2 z-50 bg-white/80 hover:bg-[#800000] hover:text-white p-3 rounded-full shadow-md"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M9 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="slider-wrapper">
+                {% for item in f_section.featured_items.all %}{% if forloop.counter0|divisibleby:2 %}<div class="dbl-slide-group">{% endif %}
+                    <div class="glass rounded-[2rem] overflow-hidden group relative flex flex-col shadow-xl border border-black/5">
+                        <div class="zoom-container relative w-full h-[350px] md:h-[500px]"><img src="{{ item.thumbnail.url }}" class="w-full h-full object-contain zoom-image slider-zoom"></div>
+                        <div class="p-6 bg-white/50 border-t border-black/5 text-center"><h3 class="text-xl font-black uppercase tracking-tight text-[#1e293b]">{{ item.title }}</h3></div>
+                    </div>
+                {% if forloop.counter|divisibleby:2 or forloop.last %}</div>{% endif %}{% endfor %}
+            </div>
+        </section>
+    </div>
+    {% endif %}
+    {% endfor %}
+
+    <section class="max-w-[95%] mx-auto py-16 border-t border-black/5 text-center">
+        <h2 class="text-4xl font-black tracking-tighter mb-12 uppercase"><span class="section-header-text">VIDEOS</span></h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 px-4 md:px-10">
+            {% for video in portfolio_videos %}
+            <div class="glass rounded-[2rem] p-4 overflow-hidden border border-black/10 shadow-xl">
+                <div class="rounded-xl overflow-hidden aspect-video bg-black">
+                    <video class="w-full h-full" controls><source src="{{ video.video_file.url }}" type="video/mp4"></video>
+                </div>
+                <p class="mt-4 text-[10px] font-bold tracking-[0.2em] text-slate-500 uppercase">{{ video.title }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="max-w-[95%] mx-auto py-16 border-t border-black/5 text-center">
+        <h2 class="text-4xl font-black tracking-tighter mb-12 uppercase"><span class="section-header-text">IMAGES</span></h2>
+        <div class="flex flex-wrap gap-6 justify-center items-center px-4">
+            {% for item in projects %}<div class="relative group overflow-hidden rounded-[2rem] glass border border-black/10 shadow-xl flex flex-col items-center max-w-fit">
+                <div class="zoom-container overflow-hidden rounded-[2rem] h-[300px] md:h-[400px]"><img src="{{ item.thumbnail.url }}" class="h-full w-auto object-cover zoom-image" alt="{{ item.title }}"></div>
+                <p class="p-4 text-[10px] font-bold tracking-[0.2em] text-slate-500 uppercase">{{ item.title }}</p>
+            </div>{% endfor %}
+        </div>
+    </section>
+
+    <section class="max-w-[95%] mx-auto py-16 border-t border-black/5 text-center">
+        <h2 class="text-4xl font-black tracking-tighter mb-12 uppercase"><span class="section-header-text">AR Products</span></h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 px-4">
+            {% for product in ar_products %}
+            <div class="glass rounded-[2rem] overflow-hidden border border-black/10 shadow-lg flex flex-col transition-all hover:border-[#800000]/50">
+                <div class="zoom-container h-[180px] md:h-[250px]">
+                    <img src="{{ product.image.url }}" class="zoom-image ar-img-fix">
+                </div>
+                <div class="p-4 bg-white/40">
+                    <h3 class="text-[9px] md:text-[10px] font-medium uppercase tracking-widest text-slate-600 mb-4 truncate">{{ product.title }}</h3>
+                    <a href="{{ product.ar_link }}" target="_blank" class="block w-full py-3 maroon-btn rounded-full text-[12px] md:text-[14px] font-black uppercase tracking-[0.2em] hover:scale-105 transition-transform">AR VIEW</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    {% if big_image_data %}
+    <section class="max-w-[95%] mx-auto py-16 border-t border-black/5 text-center">
+        <h2 class="text-4xl font-black tracking-tighter mb-12 uppercase"><span class="section-header-text">AR VIEW</span></h2>
+        <div class="glass rounded-[2rem] overflow-hidden flex flex-col w-full max-w-[95%] mx-auto shadow-2xl border border-black/5">
+            <div class="zoom-container relative w-full h-[300px] md:h-[600px]">
+                <img src="{{ big_image_data.image.url }}" class="absolute inset-0 w-full h-full object-cover zoom-image">
+            </div>
+            <div class="p-6 md:p-10 bg-white/50 border-t border-black/5 flex justify-center">
+                <a href="{{ big_image_data.ar_link }}" target="_blank" class="maroon-btn px-12 py-4 rounded-full text-[14px] md:text-[16px] font-black uppercase tracking-widest hover:scale-105 transition-transform shadow-lg">
+                    Visit here for ar views
+                </a>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <footer class="p-10 text-center text-slate-400 text-[9px] tracking-[0.4em] uppercase border-t border-black/5">&copy; 2026 SANDEEP_3D</footer>
+
+    <script>
+        document.querySelectorAll('.slider-block').forEach(block => {
+            const slider = block.querySelector('.slider-wrapper');
+            const dots = block.querySelectorAll('.dot');
+            const type = block.dataset.type;
+            let slides = type === 'std' ? block.querySelectorAll('.slide') : block.querySelectorAll('.dbl-slide-group');
+            const total = slides.length;
+            if (total <= 1) { block.querySelectorAll('.prevBtn, .nextBtn').forEach(b => b.style.display = 'none'); return; }
+            let counter = 0;
+            const update = () => {
+                slider.style.transform = `translateX(${-100 * counter}%)`;
+                dots.forEach((d, i) => { d.style.backgroundColor = (i === counter) ? '#800000' : 'rgba(0,0,0,0.1)'; d.style.width = (i === counter) ? '2.5rem' : '2rem'; });
+            };
+            block.querySelector('.nextBtn').addEventListener('click', () => { counter = (counter + 1) % total; update(); });
+            block.querySelector('.prevBtn').addEventListener('click', () => { counter = (counter - 1 + total) % total; update(); });
+            update();
+        });
+
+        document.querySelectorAll('.zoom-container').forEach(container => {
+            const img = container.querySelector('.zoom-image');
+            if(!img) return;
+            container.addEventListener('mousemove', (e) => {
+                const r = container.getBoundingClientRect();
+                const x = ((e.clientX - r.left) / r.width) * 100;
+                const y = ((e.clientY - r.top) / r.height) * 100;
+                img.style.transformOrigin = `${x}% ${y}%`;
+                img.style.transform = "scale(1.5)";
+            });
+            container.addEventListener('mouseleave', () => { img.style.transform = "scale(1)"; });
+        });
+    </script>
+    <script>
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIcon = document.getElementById('menu-icon');
+
+    menuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+        
+        // Icon toggle (Optional: Change icon from Burger to X)
+        if (mobileMenu.classList.contains('hidden')) {
+            menuIcon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+        } else {
+            menuIcon.setAttribute('d', 'M6 18L18 6M6 6l12 12');
+        }
+    });
+</script>
+</body>
+</html>

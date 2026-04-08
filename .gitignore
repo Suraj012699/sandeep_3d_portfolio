@@ -1,0 +1,21 @@
+# Python environment
+v_env/
+env/
+venv/
+ENV/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Database (Security ke liye ise push nahi karte)
+db.sqlite3
+
+# Media & Static (Badi files server par alag se handle hoti hain)
+media/
+staticfiles/
+
+# OS files
+.DS_Store
+Thumbs.db
