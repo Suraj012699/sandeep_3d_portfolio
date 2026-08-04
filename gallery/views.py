@@ -1,33 +1,81 @@
-from django.contrib.auth.models import User
 from django.shortcuts import render
-from .models import Model3D,ARProduct,AboutSection, BigImageSection, PortfolioVideo, SliderSection, FeaturedDoubleSlider
+
+from .models import (
+    ARProduct,
+    AboutSection,
+    BigImageSection,
+    FeaturedDoubleSlider,
+    Model3D,
+    PortfolioVideo,
+    SliderSection,
+)
+
 
 def home(request):
-    if not User.objects.filter(username='sandeep_admin').exists():
-        User.objects.create_superuser('sandeep_admin', 'admin@example.com', 'Sandeep@123')
-    slider_sections = SliderSection.objects.prefetch_related('projects').all().order_by('order')
-    featured_doubles = FeaturedDoubleSlider.objects.prefetch_related('featured_items').all().order_by('order')
-    
-    projects = Model3D.objects.all().order_by('-created_at')[:2]
-    portfolio_videos = PortfolioVideo.objects.all() 
+    slider_sections = (
+        SliderSection.objects
+        .prefetch_related("projects")
+        .all()
+        .order_by("order")
+    )
+
+    featured_doubles = (
+        FeaturedDoubleSlider.objects
+        .prefetch_related("featured_items")
+        .all()
+        .order_by("order")
+    )
+
+    projects = (
+        Model3D.objects
+        .all()
+        .order_by("-created_at")[:2]
+    )
+
+    portfolio_videos = (
+        PortfolioVideo.objects
+        .all()
+        .order_by("created_at")
+    )
+
     big_image_data = BigImageSection.objects.last()
-    ar_products = ARProduct.objects.all().order_by('order')
-    
+
+    ar_products = (
+        ARProduct.objects
+        .all()
+        .order_by("order")
+    )
+
     context = {
-        'projects': projects,
-        'slider_sections': slider_sections,
-        'big_image_data': big_image_data,
-        'featured_doubles': featured_doubles,
-        'ar_products': ar_products,
-        'portfolio_videos': portfolio_videos,
+        "projects": projects,
+        "slider_sections": slider_sections,
+        "featured_doubles": featured_doubles,
+        "portfolio_videos": portfolio_videos,
+        "big_image_data": big_image_data,
+        "ar_products": ar_products,
     }
-    
-    return render(request, 'gallery/index.html', context)
+
+    return render(
+        request,
+        "gallery/index.html",
+        context,
+    )
+
+
+def views_about(request):
+    about_data = AboutSection.objects.last()
+
+    return render(
+        request,
+        "gallery/about.html",
+        {
+            "about_data": about_data,
+        },
+    )
 
 
 def views_contact(request):
-    return render(request, 'gallery/contact.html')
-
-def views_about(request):
-    about_data = AboutSection.objects.last() # Sabse latest upload uthayega
-    return render(request, 'gallery/about.html', {'about_data': about_data})
+    return render(
+        request,
+        "gallery/contact.html",
+    )
