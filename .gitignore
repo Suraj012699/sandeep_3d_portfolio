@@ -1,21 +1,42 @@
-# Python environment
+# Virtual environments
+venv/
 v_env/
 env/
-venv/
 ENV/
+.venv/
 
 # Python cache
 __pycache__/
 *.py[cod]
 *$py.class
 
-# Database (Security ke liye ise push nahi karte)
-db.sqlite3
+# Local environment variables
+.env
+.env.*
+!.env.example
 
-# Media & Static (Badi files server par alag se handle hoti hain)
-media/
+# Local SQLite database
+db.sqlite3
+db.sqlite3-journal
+
+# Generated static files
 staticfiles/
 
-# OS files
+# Uploaded media fallback
+media/
+
+# Logs
+*.log
+
+# Testing and tooling
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE files
+.vscode/
+.idea/
+
+# Operating system files
 .DS_Store
 Thumbs.db
